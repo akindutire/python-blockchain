@@ -11,6 +11,10 @@ def add_block(data = 0.1, last_block = [1] ):
 
 add_block(4.5)
 add_block(3.5, get_last_block_of_chain())
-add_block(data = 4.4) 
+
+#Returns a string, but to be casted to float
+tx_amount = input("Please enter transaction data/amount ")
+
+add_block(last_block = get_last_block_of_chain(), data = float(tx_amount) ) 
 
 print(blockchain)
