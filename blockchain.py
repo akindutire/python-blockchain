@@ -13,18 +13,28 @@ def accept_block_data():
     tx_amount = input("Please enter transaction data/amount ")
     return float(tx_amount)
 
-tx_amount = accept_block_data();
-add_block(data = float(tx_amount) ) 
+#Add genesis block
+add_block() 
+
+""" 
+    Understanding loops 
+    :for, while
+    :conditional statement
+"""
 
 while True:
-    add_block( accept_block_data(), get_last_block_of_chain())
-    """ 
-        Understanding loops 
-        :for, while
-    :conditional statement
-    """
-    for block in blockchain:
-        print(block)
+    print("Please make a choice: 1-Add block, 2-Display blockchain, 3-Quit loop")
+    user_choice = input("Enter a choice ")
+    if user_choice == '1':
+        tx_amount = accept_block_data()
+        add_block( tx_amount, get_last_block_of_chain())
+    elif user_choice == '2':
+        for block in blockchain:
+            print(block)
+    elif user_choice == '3':
+       break
+    else:
+        print("Invalid input")
 
 
 
