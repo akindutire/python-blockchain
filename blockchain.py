@@ -23,3 +23,15 @@ tx_amount = accept_block_data();
 add_block(last_block = get_last_block_of_chain(), data = float(tx_amount) ) 
 
 print(blockchain)
+
+""" 
+    Understanding loops 
+    :for, while
+
+    :conditional statement
+"""
+
+for block in blockchain:
+    print(block)
+
+ 
