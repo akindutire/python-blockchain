@@ -11,6 +11,6 @@ def add_block(data = 0.1, last_block = [1] ):
 
 add_block(4.5)
 add_block(3.5, get_last_block_of_chain())
-add_block() 
+add_block(data = 4.4) 
 
 print(blockchain)
