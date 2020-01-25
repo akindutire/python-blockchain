@@ -13,25 +13,29 @@ def accept_block_data():
     tx_amount = input("Please enter transaction data/amount ")
     return float(tx_amount)
 
-
-add_block(4.5)
-
 tx_amount = accept_block_data();
-add_block(tx_amount, get_last_block_of_chain())
+add_block(data = float(tx_amount) ) 
 
-tx_amount = accept_block_data();
-add_block(last_block = get_last_block_of_chain(), data = float(tx_amount) ) 
-
-print(blockchain)
-
-""" 
-    Understanding loops 
-    :for, while
-
+while True:
+    add_block( accept_block_data(), get_last_block_of_chain())
+    """ 
+        Understanding loops 
+        :for, while
     :conditional statement
-"""
+    """
+    for block in blockchain:
+        print(block)
 
-for block in blockchain:
-    print(block)
+
+
+
+
+
+
+    
+
+
+
+
 
  
