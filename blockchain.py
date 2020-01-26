@@ -38,6 +38,9 @@ def valid_blockchain():
             break
 
         block_index += 1
+    else:
+        #The else execute immediately loop completion, similar to final block in exception handling probably other PL
+        print("Blockchain verification completed")
 
     return is_blockchain_valid
 
