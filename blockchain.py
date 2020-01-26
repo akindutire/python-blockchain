@@ -48,7 +48,7 @@ def valid_blockchain():
 
 
 #Add genesis block
-print(add_block(0.1, last_block = get_last_block_of_chain()))
+add_block(0.1, last_block = get_last_block_of_chain())
 
 """ 
     Understanding loops 
@@ -65,6 +65,8 @@ while True:
     elif user_choice == '2':
         for block in blockchain:
             print(block)
+        else:
+            print("-"*15)
     elif user_choice == '3':
        break
     else:
@@ -74,6 +76,13 @@ while True:
         break
     
    
+#Testing the range function
+for i in range(10):
+    print(i)
+else:
+    None
+
+
 
 
 
