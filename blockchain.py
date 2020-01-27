@@ -1,4 +1,6 @@
 blockchain = [ ]
+transaction_pool = [ ]
+
 
 def get_last_block_of_chain():
     #blockchain[-1] is the last block of the blockchain, however [1] is the genesis block of the blockchain
