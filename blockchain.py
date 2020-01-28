@@ -85,7 +85,7 @@ if len(participants) == len(set(participants)):
         if user_choice == '1':
         
             tx_amount, tx_receipient = accept_transaction_data()
-            add_transaction( recipient='Samuel', amount= 1.0 )
+            add_transaction( recipient=tx_receipient, amount= tx_amount )
         
         elif user_choice == '2':
             

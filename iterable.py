@@ -2,6 +2,11 @@
 # A list is more like an array in other PL  
 f_lsit = ['Milkish', 'Milkish', 'Salty']
 
+#use of list comprehension
+s_list = [1,2,3,4,5]
+s2_list = [ element * 2 for element in s_list ]
+print(s2_list)
+
 #SET doesn't allow duplicated data but mutated
 f_set = { 'Milkish', 'Milkish', 'Salty' }
 
