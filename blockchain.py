@@ -10,9 +10,7 @@ participants = ('Mark', 'Samuel', 'Deola', 'Manuel')
 
 
 def get_last_block_of_chain():
-    #blockchain[-1] is the last block of the blockchain, however [1] is the genesis block of the blockchain
-    if len(blockchain) < 1:
-        return None
+    #blockchain[-1] is the last block of the blockchain
     return blockchain[-1]
 
 def add_transaction(recipient, sender=participants[0], amount = 1.0):
@@ -22,8 +20,8 @@ def add_transaction(recipient, sender=participants[0], amount = 1.0):
 def mine_block():
     
     last_block = get_last_block_of_chain()
-    previous_hash = '';
-    for keys in last_block:
+    previous_hash = ''
+    for key in last_block:
         previous_hash += str(last_block[key])
 
     if valid_blockchain():
@@ -34,7 +32,6 @@ def mine_block():
         }
 
         blockchain.append(block)
-        transaction_pool = []
         return True
     return False
 
@@ -84,21 +81,25 @@ if len(participants) == len(set(participants)):
     while True:
         print("Please make a choice: 1-Add block, 2-Display blockchain, 3-Quit loop")
         user_choice = input("Enter a choice ")
+        
         if user_choice == '1':
+        
             tx_amount, tx_receipient = accept_transaction_data()
             add_transaction( recipient='Samuel', amount= 1.0 )
+        
         elif user_choice == '2':
+            
+            mine_block()
             for block in blockchain:
                 print(block)
             else:
                 print("-"*15)
+
         elif user_choice == '3':
             break
         else:
             print("Invalid input")
 
-        if not valid_blockchain():
-            break
         
     
     #Testing the range function
