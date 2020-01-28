@@ -17,16 +17,16 @@ def add_transaction(recipient, sender=participants[0], amount = 1.0):
     transaction = { 'sender': sender, 'recipicient': recipient, 'amount' : amount }
     transaction_pool.append(transaction) 
 
+def hash_block(block):
+    return '-'.join( [str(block[key])]  for key in  block )
+
 def mine_block():
     
     last_block = get_last_block_of_chain()
-    previous_hash = ''
-    for key in last_block:
-        previous_hash += str(last_block[key])
-
+    
     if valid_blockchain():
         block = {
-            'previous_hash': previous_hash,
+            'previous_hash': hash_block(last_block),
             'index' : len(blockchain),
             'transactions' : transaction_pool 
         }
@@ -48,11 +48,15 @@ def valid_blockchain():
     """ Verify that blockchain is valid """
     block_index = 0
     is_blockchain_valid = True
-    for block in blockchain:
-        if block_index < 1:
+    
+    last_block = get_last_block_of_chain()
+
+    for (index, block) in enumerate(blockchain):
+        
+        if index < 1:
             continue
 
-        if (block[0] == blockchain[block_index-1]) and (block_index > 0):
+        if (block['previous_hash'] == hash_block(last_block)) and (index > 0):
             is_blockchain_valid = True
             continue
         else:
@@ -66,6 +70,9 @@ def valid_blockchain():
 
     return is_blockchain_valid
 
+
+def get_balance(participant):
+    pass
 
 if len(participants) == len(set(participants)):
 
@@ -89,7 +96,9 @@ if len(participants) == len(set(participants)):
         
         elif user_choice == '2':
             
-            mine_block()
+            if mine_block() == True:
+                transaction_pool = [];
+
             for block in blockchain:
                 print(block)
             else:
