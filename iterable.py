@@ -5,6 +5,7 @@ f_lsit = ['Milkish', 'Milkish', 'Salty']
 #SET doesn't allow duplicated data but mutated
 f_set = { 'Milkish', 'Milkish', 'Salty' }
 
+
 #TUPLE:immutatble are for hard coded list with duplicated entries in a particular order
 f_tuple = ( 'Malty', 'Salty', 'Milkish')
 
