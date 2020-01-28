@@ -19,14 +19,16 @@ def add_transaction(recipient, sender=participants[0], amount = 1.0):
     transaction = { 'sender': sender, 'recipicient': recipient, 'amount' : amount }
     transaction_pool.append(transaction) 
 
-def mine_block(data, last_block):
-    #Append the last block into the new block and then the new value for the current block
-    if last_block == None:
-        last_block = genesis_block
+def mine_block():
     
+    last_block = get_last_block_of_chain()
+    previous_hash = '';
+    for keys in last_block:
+        previous_hash += str(last_block[key])
+
     if valid_blockchain():
         block = {
-            'previous_hash': '',
+            'previous_hash': previous_hash,
             'index' : len(blockchain),
             'transactions' : transaction_pool 
         }
