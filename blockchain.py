@@ -20,6 +20,10 @@ def get_last_block_of_chain():
 def add_transaction(recipient, sender=participants[0], amount = 2.0):
     if recipient in participants and (sender in participants):
         
+        if get_balance(sender) <= amount:
+            print("Insufficient balance")
+            return
+
         global mining_fee
         amount -= mining_fee
         mining_fee += mining_fee
