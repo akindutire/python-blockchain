@@ -19,9 +19,11 @@ def get_last_block_of_chain():
 
 def add_transaction(recipient, sender=participants[0], amount = 2.0):
     if recipient in participants and (sender in participants):
+        
         global mining_fee
         amount -= mining_fee
         mining_fee += mining_fee
+        
         transaction = { 'sender': sender, 'recipicient': recipient, 'amount' : amount }
         transaction_pool.append(transaction) 
     else:
@@ -37,9 +39,9 @@ def mine_block():
     
     if valid_blockchain() == True:
         
- 
-        add_transaction(Miner, '*', amount = mining_fee)
-        
+
+        transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
+        transaction_pool.append(transaction) 
 
         block = {
             'previous_hash': hash_block(last_block),
