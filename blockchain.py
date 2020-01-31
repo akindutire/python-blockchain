@@ -1,8 +1,9 @@
-import functools
+import functools as ft
 import hashlib
 import json
 
 genesis_block = {
+    'nonce': 0,
     'previous_hash': '',
     'index' : 0,
     'transactions' : []
@@ -21,9 +22,9 @@ def get_last_block_of_chain():
 def add_transaction(recipient, sender=participants[0], amount = 2.0):
     if recipient in participants and (sender in participants):
         
-        if get_balance(sender) <= amount:
-            print("Insufficient balance")
-            return
+        # if get_balance(sender) <= amount:
+        #     print("Insufficient balance")
+        #     return
 
         global mining_fee
         amount -= mining_fee
@@ -36,6 +37,7 @@ def add_transaction(recipient, sender=participants[0], amount = 2.0):
 
 def hash_block(block):
     #return '-'.join( str(block[key])  for key in  block )
+    #json converts a dictionary similar to object in JS to json, e.g json.parse and object.stringify in JS
     return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
 def mine_block():
@@ -61,6 +63,23 @@ def mine_block():
         return False
 
 
+def generate_proof_of_work():
+    #Proof of work takes the transactions, previoushash, and a number(nonce) such that when combined and hashed, the hash generated
+    #contains a certain number of leading 0 or any character
+    #str can be used to convert a string
+    nonce = 0
+    proof_of_work_part_input = (hash_block(get_last_block_of_chain()) + str(transaction_pool) + str(nonce)).encode()
+    proof_of_work = hashlib.sha256(proof_of_work_part_input).hexdigest()
+ 
+    while proof_of_work[0:2] != '00':
+        nonce += 1
+    return nonce
+
+def verify_proof_of_work(block):
+    proof_of_work = hashlib.sha256(block['previous_hash'] + json.dumps(block['transactions']).encode() + str(block['nonce'])).hexdigest()
+    if proof_of_work[0] == '0':
+        return True
+    return False    
 
 def accept_transaction_data():
     #Returns a string, but to be casted to float
