@@ -1,5 +1,6 @@
 import functools
-
+import hashlib
+import json
 
 genesis_block = {
     'previous_hash': '',
@@ -35,7 +36,7 @@ def add_transaction(recipient, sender=participants[0], amount = 2.0):
 
 def hash_block(block):
     #return '-'.join( str(block[key])  for key in  block )
-    return block['index']
+    return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
 def mine_block():
     
