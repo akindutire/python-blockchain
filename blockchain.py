@@ -40,29 +40,6 @@ def hash_block(block):
     #json converts a dictionary similar to object in JS to json, e.g json.parse and object.stringify in JS
     return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
-def mine_block():
-    
-    last_block = get_last_block_of_chain()
-    
-    if valid_blockchain() == True:
-        
-
-        transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
-        transaction_pool.append(transaction) 
-
-        block = {
-            'previous_hash': hash_block(last_block),
-            'index' : len(blockchain),
-            'transactions' : transaction_pool 
-        }
-
-        blockchain.append(block)
-        return True
-    else:
-        print("Blockchain is invalid")
-        return False
-
-
 def generate_proof_of_work():
     #Proof of work takes the transactions, previoushash, and a number(nonce) such that when combined and hashed, the hash generated
     #contains a certain number of leading 0 or any character
@@ -76,6 +53,35 @@ def generate_proof_of_work():
     return nonce
 
 def verify_proof_of_work(block):
+
+def mine_block():
+    
+    last_block = get_last_block_of_chain()
+    
+    if valid_blockchain() == True:
+        
+        nonce = generate_proof_of_work()
+        if nonce == 0:
+            return False
+             
+        transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
+        transaction_pool.append(transaction) 
+
+        block = {
+            'nonce' : nonce,
+            'previous_hash': hash_block(last_block),
+            'index' : len(blockchain),
+            'transactions' : transaction_pool 
+        }
+
+        blockchain.append(block)
+        return True
+    else:
+        print("Blockchain is invalid")
+        return False
+
+
+
     proof_of_work = hashlib.sha256(block['previous_hash'] + json.dumps(block['transactions']).encode() + str(block['nonce'])).hexdigest()
     if proof_of_work[0] == '0':
         return True
