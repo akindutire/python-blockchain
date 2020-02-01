@@ -39,7 +39,7 @@ def add_transaction(recipient, sender=participants[0], amount = 2.0):
 def hash_block(block):
     #return '-'.join( str(block[key])  for key in  block )
     #json converts a dictionary similar to object in JS to json, e.g json.parse and object.stringify in JS
-    return hashlib.sha256(json.dumps(block).encode()).hexdigest()
+    return hashlib.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
 
 def generate_proof_of_work():
     #Proof of work takes the transactions, previoushash, and a number(nonce) such that when combined and hashed, the hash generated
@@ -107,8 +107,8 @@ def valid_blockchain():
             is_blockchain_valid = False
             break
 
-        # if not has_valid_proof(block):
-        #     break
+        if not has_valid_proof(block):
+            break
     else:
         #The else execute immediately loop completion, similar to final block in exception handling probably other PL
         print("Blockchain verification completed")
