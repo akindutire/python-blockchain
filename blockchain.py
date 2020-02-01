@@ -49,13 +49,15 @@ def generate_proof_of_work():
     proof_of_work_part_input = (hash_block(get_last_block_of_chain()) + str(transaction_pool) + str(nonce)).encode()
     proof_of_work = hashlib.sha256(proof_of_work_part_input).hexdigest()
  
-    while proof_of_work[0:2] != proof_requirement:
+    while not proof_of_work[0:2] == proof_requirement:
         nonce += 1
+        proof_of_work_part_input = (hash_block(get_last_block_of_chain()) + str(transaction_pool) + str(nonce)).encode()
+        proof_of_work = hashlib.sha256(proof_of_work_part_input).hexdigest()
+        
     return nonce
 
-def is_has_valid_proof(block, nonce):
-    transations = block['transactions'][1:]
-    proof = ( str(transations) + str(block['previous_hash']) + str(nonce) ).encode()
+def has_valid_proof(block):
+    proof = ( str(block['transactions'][1:]) + str(block['previous_hash']) + str(block['nonce']) ).encode()
     guess = hashlib.sha256(proof).hexdigest()
     return guess[0:2] == proof_requirement
 
@@ -63,12 +65,12 @@ def mine_block():
     
     last_block = get_last_block_of_chain()
     
-    if valid_blockchain() == True:
         
-        nonce = generate_proof_of_work()
-        if nonce == 0:
-            return False
+    nonce = generate_proof_of_work()
+    if nonce == 0:
+        return False
 
+    if valid_blockchain() == True:
         transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
         transaction_pool.append(transaction) 
 
@@ -86,12 +88,6 @@ def mine_block():
         return False
 
 
-
-    proof_of_work = hashlib.sha256(block['previous_hash'] + json.dumps(block['transactions']).encode() + str(block['nonce'])).hexdigest()
-    if proof_of_work[0] == '0':
-        return True
-    return False    
-
 def accept_transaction_data():
     #Returns a string, but to be casted to float
     tx_amount = float(input("Please enter transaction data/amount "))
@@ -108,9 +104,12 @@ def valid_blockchain():
         if index < 1:
             continue
 
-        if block['previous_hash'] != hash_block(blockchain[index-1]):
+        if block['previous_hash'] != hash_block(get_last_block_of_chain()):
             is_blockchain_valid = False
             break
+
+        # if not has_valid_proof(block):
+        #     break
     else:
         #The else execute immediately loop completion, similar to final block in exception handling probably other PL
         print("Blockchain verification completed")
@@ -159,8 +158,7 @@ if len(participants) == len(set(participants)):
                 transaction_pool = []
                 for block in blockchain:
                     print(block)
-                    print("-"*15)
-                    
+                    print("-"*15)                    
             else:
                 print("Error mining new block")                
 
@@ -171,8 +169,6 @@ if len(participants) == len(set(participants)):
             print("Balance is {:-^5.2f}".format(get_balance(participant)))
         else:
             print("Invalid input")
-
-        
     
 else:
     print('there are multiple participants.')
