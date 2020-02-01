@@ -18,11 +18,18 @@ mining_fee = 0.0002
 proof_requirement = '00'
 
 def save_data():
-    with open('data/blockchain.txt', 'w') as f:
+    with open('data/blockchain.txt', mode='w') as f:
         f.write(str(blockchain))
         f.write("\n")
         f.write(str(transaction_pool))
 
+def load_data():
+    with open('data/blockchain.txt', mode='r') as f:
+        all_blocks_and_transaction = f.readlines();
+        global blockchain
+        global transaction_pool
+        blockchain = all_blocks_and_transaction[0]
+        transaction_pool = all_blocks_and_transaction[1]
 
 def get_last_block_of_chain():
     #blockchain[-1] is the last block of the blockchain
@@ -99,6 +106,7 @@ def mine_block():
         }
 
         blockchain.append(block)
+        save_data()
         return True
     else:
         print("Blockchain is invalid")
