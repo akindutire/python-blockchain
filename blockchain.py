@@ -1,6 +1,7 @@
 import functools as ft
 import hashlib
 import json
+from collections import OrderedDict
 
 genesis_block = {
     'nonce': 0,
@@ -31,7 +32,12 @@ def add_transaction(recipient, sender=participants[0], amount = 2.0):
         amount -= mining_fee
         mining_fee += mining_fee
         
-        transaction = { 'sender': sender, 'recipicient': recipient, 'amount' : amount }
+        # transaction = { 'sender': sender, 'recipicient': recipient, 'amount' : amount }
+        transaction = OrderedDict([
+            ('sender', sender),
+            ('recipicient', recipient),
+            ('amount' , amount)
+        ])
         transaction_pool.append(transaction) 
     else:
         print("Unknown participant")
@@ -70,7 +76,12 @@ def mine_block():
         return False
 
     if valid_blockchain():
-        transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
+        # transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
+        transaction = OrderedDict([
+            ('sender', '*'),
+            ('recipicient', Miner),
+            ('amount' , mining_fee)
+        ])
         transaction_pool.append(transaction) 
 
         block = {
