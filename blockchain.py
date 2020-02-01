@@ -17,6 +17,13 @@ Miner = participants[4]
 mining_fee = 0.0002
 proof_requirement = '00'
 
+def save_data():
+    with open('data/blockchain.txt', 'w') as f:
+        f.write(str(blockchain))
+        f.write("\n")
+        f.write(str(transaction_pool))
+
+
 def get_last_block_of_chain():
     #blockchain[-1] is the last block of the blockchain
     return blockchain[-1]
