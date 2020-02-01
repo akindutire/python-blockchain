@@ -25,11 +25,13 @@ def save_data():
 
 def load_data():
     with open('data/blockchain.txt', mode='r') as f:
-        all_blocks_and_transaction = f.readlines();
+        all_blocks_and_transaction = f.readlines()
         global blockchain
         global transaction_pool
         blockchain = all_blocks_and_transaction[0]
         transaction_pool = all_blocks_and_transaction[1]
+load_data()
+
 
 def get_last_block_of_chain():
     #blockchain[-1] is the last block of the blockchain
