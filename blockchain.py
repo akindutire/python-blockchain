@@ -64,13 +64,12 @@ def has_valid_proof(block):
 def mine_block():
     
     last_block = get_last_block_of_chain()
-    
-        
+            
     nonce = generate_proof_of_work()
     if nonce == 0:
         return False
 
-    if valid_blockchain() == True:
+    if valid_blockchain():
         transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
         transaction_pool.append(transaction) 
 
@@ -104,7 +103,7 @@ def valid_blockchain():
         if index < 1:
             continue
 
-        if block['previous_hash'] != hash_block(get_last_block_of_chain()):
+        if not block['previous_hash'] == hash_block(blockchain[index-1]):
             is_blockchain_valid = False
             break
 
