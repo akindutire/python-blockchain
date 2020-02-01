@@ -14,6 +14,7 @@ transaction_pool = [ ]
 participants = ('Mark', 'Samuel', 'Deola', 'Manuel', 'Ay', '*')
 Miner = participants[4]
 mining_fee = 0.0002
+proof_requirement = '00'
 
 def get_last_block_of_chain():
     #blockchain[-1] is the last block of the blockchain
@@ -48,11 +49,15 @@ def generate_proof_of_work():
     proof_of_work_part_input = (hash_block(get_last_block_of_chain()) + str(transaction_pool) + str(nonce)).encode()
     proof_of_work = hashlib.sha256(proof_of_work_part_input).hexdigest()
  
-    while proof_of_work[0:2] != '00':
+    while proof_of_work[0:2] != proof_requirement:
         nonce += 1
     return nonce
 
-def verify_proof_of_work(block):
+def is_has_valid_proof(block, nonce):
+    transations = block['transactions'][1:]
+    proof = ( str(transations) + str(block['previous_hash']) + str(nonce) ).encode()
+    guess = hashlib.sha256(proof).hexdigest()
+    return guess[0:2] == proof_requirement
 
 def mine_block():
     
@@ -63,7 +68,7 @@ def mine_block():
         nonce = generate_proof_of_work()
         if nonce == 0:
             return False
-             
+
         transaction = { 'sender': '*', 'recipicient': Miner, 'amount' : mining_fee }
         transaction_pool.append(transaction) 
 
@@ -103,13 +108,9 @@ def valid_blockchain():
         if index < 1:
             continue
 
-        if block['previous_hash'] == hash_block(blockchain[index-1]):
-            is_blockchain_valid = True
-            continue
-        else:
+        if block['previous_hash'] != hash_block(blockchain[index-1]):
             is_blockchain_valid = False
             break
-
     else:
         #The else execute immediately loop completion, similar to final block in exception handling probably other PL
         print("Blockchain verification completed")
