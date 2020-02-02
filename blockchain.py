@@ -19,13 +19,16 @@ mining_fee = 0.0002
 proof_requirement = '00'
 
 def save_data():
-    with open('data/blockchain.pick', mode='wb') as f:
-        data ={
-            'chain' : blockchain,
-            'tx_pool' : transaction_pool
-        }
-        f.write(pickle.dumps(data))
- 
+    try:
+        with open('data/blockchain.pick', mode='wb') as f:
+            data ={
+                'chain' : blockchain,
+                'tx_pool' : transaction_pool
+            }
+            f.write(pickle.dumps(data))
+    except (FileNotFoundError, IOError):
+        print("An error occured")
+
 def load_data():
 
     with open('data/blockchain.pick', mode='rb') as f:
