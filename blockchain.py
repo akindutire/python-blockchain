@@ -1,6 +1,7 @@
 import functools as ft
 import hashlib
 import json
+import pickle
 from collections import OrderedDict
 
 genesis_block = {
@@ -18,18 +19,22 @@ mining_fee = 0.0002
 proof_requirement = '00'
 
 def save_data():
-    with open('data/blockchain.txt', mode='w') as f:
-        f.write(str(blockchain))
-        f.write("\n")
-        f.write(str(transaction_pool))
-
+    with open('data/blockchain.pick', mode='wb') as f:
+        data ={
+            'chain' : blockchain,
+            'tx_pool' : transaction_pool
+        }
+        f.write(pickle.dumps(data))
+ 
 def load_data():
-    with open('data/blockchain.txt', mode='r') as f:
-        all_blocks_and_transaction = f.readlines()
+
+    with open('data/blockchain.pick', mode='rb') as f:
+        all_blocks_and_transaction = pickle.loads(f.read())
         global blockchain
         global transaction_pool
-        blockchain = all_blocks_and_transaction[0]
-        transaction_pool = all_blocks_and_transaction[1]
+        blockchain = all_blocks_and_transaction['chain']
+        transaction_pool = all_blocks_and_transaction['tx_pool']
+
 load_data()
 
 
