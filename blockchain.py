@@ -28,6 +28,11 @@ def save_data():
             f.write(pickle.dumps(data))
     except (FileNotFoundError, IOError):
         print("An error occured")
+    except:
+        #Generic error type
+        print("Unknown error")
+    finally:
+        print("End of block")
 
 def load_data():
 
